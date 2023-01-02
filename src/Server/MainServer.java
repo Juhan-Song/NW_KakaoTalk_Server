@@ -75,9 +75,13 @@ public class MainServer extends Thread {
                                 SearchUserProcess(client);
                                 break;
                             // 유저 검색 프로세스
+                            case 3004:
+                                UserInformationProcess(client);
+                                break;
                             case 3003:
                                 LogoutProcess(client);
                                 break;
+                            // 로그아웃 프로세스
                             default:
                                 break;
                         }
@@ -138,6 +142,17 @@ public class MainServer extends Thread {
                 // 클라이언트에게 결과 전송
             } // 검색된 유저가 없는 경우
         } // 유저 검색 프로세스
+
+        private void UserInformationProcess(JSONObject clientJSON) {
+            System.out.println(Util.createLogString("Main", socket.getInetAddress().getHostAddress(), "UserInformation Request"));
+
+            String nickName = String.valueOf(clientJSON.get("user"));
+            System.out.println(nickName);
+
+            HashMap<String, Object> userInfo = Select.SelectUserInformation(new ConnectDB(), nickName);
+
+            serverOutput.println(Util.createJSON(200, userInfo));
+        }
 
         private void LogoutProcess(JSONObject clientJSON) {
             System.out.println(Util.createLogString("Main", socket.getInetAddress().getHostAddress(), "Logout Request"));

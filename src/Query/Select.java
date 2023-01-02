@@ -4,7 +4,7 @@ import User.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 
 public class Select {
     public static boolean isIdPossible(ConnectDB connectDB, String id) {
@@ -203,6 +203,39 @@ public class Select {
         }
 
         return msg;
+    }
+
+    public static HashMap<String, Object> SelectUserInformation(ConnectDB connectDB, String user) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        HashMap<String, Object> userInfo = new HashMap<String, Object>();
+        userInfo.put("userInfo", "false");
+
+        try {
+            String sql = "select name, nickname, birth, phone, email, message from userinfo where nickname = ?";
+            pstmt = connectDB.getCon().prepareStatement(sql);
+
+            pstmt.setString(1, user);
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                userInfo.replace("userInfo", "true");
+                userInfo.put("name", rs.getString("name"));
+                userInfo.put("nickname", rs.getString("nickname"));
+                userInfo.put("birth", rs.getString("birth"));
+                userInfo.put("phone", rs.getString("phone"));
+                userInfo.put("email", rs.getString("email"));
+                userInfo.put("message", rs.getString("message"));
+            }
+
+            rs.close();
+            pstmt.close();
+            connectDB.Disconnect();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return userInfo;
     }
 
     public static ArrayList<Messages> SelectAllMessages(Connection con) {

@@ -6,7 +6,16 @@ public class User {
     private String nickName;
     private String birth;
     private String phone;
+    private String email;
     private String message;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public void setMessage(String message) {
         this.message = message;
