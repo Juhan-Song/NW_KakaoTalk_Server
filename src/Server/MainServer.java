@@ -99,6 +99,8 @@ public class MainServer extends Thread {
             String msg = Select.SelectUserMessage(new ConnectDB(), user);
             // 데이터베이스에서 탐색
 
+            System.out.println(Util.createLogString("Main", socket.getInetAddress().getHostAddress(), "User Request Success"));
+
             HashMap<String, Object> userResponse = new HashMap<String, Object>();
             userResponse.put("user", user);
             userResponse.put("msg", msg);
